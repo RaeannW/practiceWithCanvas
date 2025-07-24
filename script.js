@@ -57,7 +57,7 @@ class Particle {
         // this.y = mouse.y;
         this.x = Math.random() * canvas.width;
         this.y = Math.random() * canvas.height;
-        this.size = Math.random() * 5 + 1;
+        this.size = Math.random() * 15 + 1;
         this.speedX = Math.random() * 3 - 1.5;
         this.speedY = Math.random() * 3 - 1.5;
     }
@@ -65,12 +65,13 @@ class Particle {
         //change x and y coordinates based on speedX and speedY values -> particles move in all directions
         this.x += this.speedX;
         this.y +- this.speedY;
+        if(this.size > 0.2) this.size -= 0.1;
     }
     draw() {
         ctx.fillStyle = 'red';
         ctx.beginPath();
-        ctx.arc(this.x, this.y, 50, 0, Math.PI * 2);
-        ctx.fillStyle();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
     }
 }
 
@@ -82,9 +83,17 @@ function createParticles () {
 createParticles();
 console.log(particlesArray);
 
+function handleParticles(){
+    for (let i = 0; i < particlesArray.length; i++){
+        particlesArray[i].update();
+        particlesArray[i].draw();
+    }
+}
+
 function animate(){
     //clear frame
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    handleParticles();
     // drawCircle();
     //calls function once -> and then runs over and over
     requestAnimationFrame(animate);
